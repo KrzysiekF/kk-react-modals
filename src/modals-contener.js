@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { map } from 'lodash';
+import { map, size } from 'lodash';
 import { eventNames } from './event-emmiter';
 
 import Modal from './modal';
 
-import { openModalAction } from './actions';
+import { openModalAction , closeModalAction } from './actions';
 
 class ModalsContener extends Component {
   componentDidMount() {
@@ -13,18 +13,25 @@ class ModalsContener extends Component {
       console.log('~~~> kk-react-modals ', eventNames.open, event.detail);
 
       const id = Math.floor(Math.random() * 100);
-      this.props.openModalAction(id, event.detail);
+      this.props.openModalAction(id, { id, ...event.detail });
+    });
+
+    document.addEventListener(eventNames.close, (event) => {
+      console.log('~~~> kk-react-modals ', eventNames.close, event.detail);
+
+      this.props.closeModalAction(event.detail.id);
     });
   }
 
   render() {
     return (
       <div className="kk-modals-contener">
-        {map(this.props.modals, modal => (
-          <Modal closeModal={() => {}} store={this.props.store}>
+        {map(this.props.modals, (modal, id) => (
+          <Modal closeModal={() => {}} id={id} {...modal.settings} store={this.props.store}>
             xxxxxx
           </Modal>
         ))}
+        {size(this.props.modals) > 10 ? <div className="kk-modal-overflow" /> : ''}
       </div>
     );
   }
@@ -34,4 +41,4 @@ const mapStateToProps = state => ({
   modals: state.modals,
 });
 
-export default connect(mapStateToProps, { openModalAction })(ModalsContener);
+export default connect(mapStateToProps, { openModalAction, closeModalAction })(ModalsContener);

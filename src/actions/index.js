@@ -7,3 +7,10 @@ export function openModalAction(id, payload) {
     payload,
   };
 }
+
+export function closeModalAction(id) {
+  return {
+    type: types.KK_CLOSE_MODAL,
+    payload: id,
+  };
+}

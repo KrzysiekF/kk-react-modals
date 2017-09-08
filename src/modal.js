@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
+import { emmiter } from './event-emmiter';
 import './assets/styles/modals.css';
 
 class Modal extends Component {
@@ -26,6 +27,8 @@ class Modal extends Component {
   }
 
   componentDidMount() {
+    console.log('--> props: ', this.props);
+
     this.modalTarget = document.createElement('div');
     this.modalTarget.className = 'kk-modal';
     document.body.appendChild(this.modalTarget);
@@ -43,7 +46,8 @@ class Modal extends Component {
   }
 
   closeModal() {
-    this.props.closeModal();
+    // this.props.closeModal();
+    emmiter.close(this.props.id);
   }
 
   renderTitle() {
@@ -58,7 +62,7 @@ class Modal extends Component {
         </div>
         <div className="col-1 text-right">
           <button onClick={this.closeModal}>
-            <i className="fa fa-times" />
+            x
           </button>
         </div>
       </div>
@@ -81,7 +85,6 @@ class Modal extends Component {
       <Provider store={this.props.store}>
         <div>
           {this.renderModalBox()}
-          <div className="kk-modal-overflow" />
         </div>
       </Provider>,
       this.modalTarget,

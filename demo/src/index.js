@@ -15,7 +15,7 @@ class Demo extends Component {
   }
 
   openModal() {
-    modal.open('test', { test: 'test', test1: 'test1' });
+    modal.open('test', { title: 'test' });
   }
 
   render() {
